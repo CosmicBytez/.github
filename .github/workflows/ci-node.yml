@@ -42,6 +42,10 @@ on:
         description: Runner label
         type: string
         default: self-hosted
+      cache:
+        description: actions/setup-node cache strategy (npm | yarn | pnpm | "" to disable). Defaults to disabled because self-hosted runners already persist ~/.npm and the 2 GB cache upload/download dominates job time.
+        type: string
+        default: ""
 
 jobs:
   lint:
@@ -55,8 +59,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ inputs.node-version }}
-          cache: ${{ inputs.package-manager }}
-          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+          cache: ${{ inputs.cache }}
       - name: Install
         run: ${{ inputs.install-command != '' && inputs.install-command || format('{0} ci', inputs.package-manager) }}
       - name: Lint
@@ -73,8 +76,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ inputs.node-version }}
-          cache: ${{ inputs.package-manager }}
-          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+          cache: ${{ inputs.cache }}
       - name: Install
         run: ${{ inputs.install-command != '' && inputs.install-command || format('{0} ci', inputs.package-manager) }}
       - name: Type check
@@ -91,8 +93,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ inputs.node-version }}
-          cache: ${{ inputs.package-manager }}
-          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+          cache: ${{ inputs.cache }}
       - name: Install
         run: ${{ inputs.install-command != '' && inputs.install-command || format('{0} ci', inputs.package-manager) }}
       - name: Test
@@ -110,8 +111,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ inputs.node-version }}
-          cache: ${{ inputs.package-manager }}
-          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+          cache: ${{ inputs.cache }}
       - name: Install
         run: ${{ inputs.install-command != '' && inputs.install-command || format('{0} ci', inputs.package-manager) }}
       - name: Build
