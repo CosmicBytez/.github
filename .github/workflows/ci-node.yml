@@ -30,6 +30,10 @@ on:
         description: Test command (set to "" to skip the test job)
         type: string
         default: "npm test -- --ci"
+      type-check-command:
+        description: Type-check command (set to "" to skip; runs as its own job when set)
+        type: string
+        default: ""
       build-command:
         description: Build command (set to "" to skip the build job)
         type: string
@@ -58,6 +62,24 @@ jobs:
       - name: Lint
         run: ${{ inputs.lint-command }}
 
+  type-check:
+    if: inputs.type-check-command != ''
+    runs-on: ${{ inputs.runs-on }}
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: ${{ inputs.package-manager }}
+          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+      - name: Install
+        run: ${{ inputs.install-command != '' && inputs.install-command || format('{0} ci', inputs.package-manager) }}
+      - name: Type check
+        run: ${{ inputs.type-check-command }}
+
   test:
     if: inputs.test-command != ''
     runs-on: ${{ inputs.runs-on }}
@@ -78,7 +100,7 @@ jobs:
 
   build:
     if: inputs.build-command != ''
-    needs: [lint, test]
+    needs: [lint, type-check, test]
     runs-on: ${{ inputs.runs-on }}
     defaults:
       run:
