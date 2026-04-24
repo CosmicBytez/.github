@@ -1,0 +1,96 @@
+name: Reusable Node CI
+
+# Reusable lint/test/build pipeline for Node.js projects.
+# Consumers call this via `uses: CosmicBytez/.github/.github/workflows/ci-node.yml@v1`.
+
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        description: Node.js version to install
+        type: string
+        default: "22"
+      working-directory:
+        description: Subdirectory that contains package.json (use "." for repo root)
+        type: string
+        default: "."
+      package-manager:
+        description: npm | pnpm | yarn
+        type: string
+        default: npm
+      install-command:
+        description: Override for the install step (defaults to `<pm> ci` / equivalent)
+        type: string
+        default: ""
+      lint-command:
+        description: Lint command (set to "" to skip the lint job)
+        type: string
+        default: "npm run lint"
+      test-command:
+        description: Test command (set to "" to skip the test job)
+        type: string
+        default: "npm test -- --ci"
+      build-command:
+        description: Build command (set to "" to skip the build job)
+        type: string
+        default: "npm run build"
+      runs-on:
+        description: Runner label
+        type: string
+        default: self-hosted
+
+jobs:
+  lint:
+    if: inputs.lint-command != ''
+    runs-on: ${{ inputs.runs-on }}
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: ${{ inputs.package-manager }}
+          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+      - name: Install
+        run: ${{ inputs.install-command != '' && inputs.install-command || format('{0} ci', inputs.package-manager) }}
+      - name: Lint
+        run: ${{ inputs.lint-command }}
+
+  test:
+    if: inputs.test-command != ''
+    runs-on: ${{ inputs.runs-on }}
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: ${{ inputs.package-manager }}
+          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+      - name: Install
+        run: ${{ inputs.install-command != '' && inputs.install-command || format('{0} ci', inputs.package-manager) }}
+      - name: Test
+        run: ${{ inputs.test-command }}
+
+  build:
+    if: inputs.build-command != ''
+    needs: [lint, test]
+    runs-on: ${{ inputs.runs-on }}
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: ${{ inputs.package-manager }}
+          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
+      - name: Install
+        run: ${{ inputs.install-command != '' && inputs.install-command || format('{0} ci', inputs.package-manager) }}
+      - name: Build
+        run: ${{ inputs.build-command }}
