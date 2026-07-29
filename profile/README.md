@@ -23,8 +23,8 @@
 | Project | Description | |
 |---------|-------------|---|
 | [**BC Docker Manager**](https://github.com/CosmicBytez/bc-docker-manager) | Electron desktop app for Business Central Docker containers with Claude AI troubleshooting | ![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white) ![Electron](https://img.shields.io/badge/-Electron-47848F?style=flat-square&logo=electron&logoColor=white) |
-| [**CosmicPing**](https://github.com/azullus/CosmicPing) | Real-time network diagnostic tool with latency monitoring, packet loss tracking, and CSV export | ![C#](https://img.shields.io/badge/-C%23-512BD4?style=flat-square&logo=dotnet&logoColor=white) ![.NET 8](https://img.shields.io/badge/-.NET_8-512BD4?style=flat-square&logo=dotnet&logoColor=white) |
-| [**WifiSurvey**](https://github.com/azullus/WifiSurvey) | Professional WiFi site survey tool with signal strength heatmaps and coverage analysis | ![C#](https://img.shields.io/badge/-C%23-512BD4?style=flat-square&logo=dotnet&logoColor=white) ![.NET 8](https://img.shields.io/badge/-.NET_8-512BD4?style=flat-square&logo=dotnet&logoColor=white) |
+| [**CosmicPing**](https://github.com/CosmicBytez/CosmicPing) | Real-time network diagnostic tool with latency monitoring, packet loss tracking, and CSV export | ![C#](https://img.shields.io/badge/-C%23-512BD4?style=flat-square&logo=dotnet&logoColor=white) ![.NET 8](https://img.shields.io/badge/-.NET_8-512BD4?style=flat-square&logo=dotnet&logoColor=white) |
+| [**WifiSurvey**](https://github.com/CosmicBytez/WifiSurvey) | Professional WiFi site survey tool with signal strength heatmaps and coverage analysis | ![C#](https://img.shields.io/badge/-C%23-512BD4?style=flat-square&logo=dotnet&logoColor=white) ![.NET 8](https://img.shields.io/badge/-.NET_8-512BD4?style=flat-square&logo=dotnet&logoColor=white) |
 
 ## Tech Stack
 
